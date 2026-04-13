@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Control de PCs</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Registros de Uso</h1>
+    <button onclick="cargar()">Cargar Datos</button>
+
+    <table id="tabla">
+        <thead>
+            <tr>
+                <th>PC</th>
+                <th>Usuarios</th>
+                <th>Uptime</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function cargar() {
+            const res = await fetch("http://127.0.0.1:5000/registros");
+            const data = await res.json();
+
+            const tbody = document.querySelector("#tabla tbody");
+            tbody.innerHTML = "";
+
+            data.forEach(reg => {
+                const fila = `
+                    <tr>
+                        <td>${reg.pc}</td>
+                        <td>${reg.usuarios}</td>
+                        <td>${reg.uptime}</td>
+                        <td>${reg.timestamp}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += fila;
+            });
+        }
+    </script>
+
+</body>
+</html>
